@@ -1,0 +1,31 @@
+:root {
+  /* Brand Colors */
+  --primary: 65, 50%, 35%;
+  /* Greenish Brown (Olive) */
+  --primary-dark: 65, 60%, 25%;
+  --secondary: 45, 95%, 55%;
+  /* Gold/Yellow */
+  --accent: 340, 80%, 60%;
+  /* Vibrant Pink/Red for calls to action */
+
+  /* Neutrals */
+  --bg-main: 210, 20%, 98%;
+  --bg-card: 0, 0%, 100%;
+  --text-main: 220, 30%, 20%;
+  --text-light: 220, 15%, 45%;
+
+  /* Spacing */
+  --radius: 12px;
+  --header-height: 80px;
+
+  /* Fonts */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+[data-theme='dark'] {
+  --bg-main: 220, 30%, 10%;
+  --bg-card: 220, 25%, 15%;
+  --text-main: 210, 20%, 95%;
+  --text-light: 210, 15%, 70%;
+}

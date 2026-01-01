@@ -1,0 +1,121 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.header h1 {
+    font-size: 3rem;
+    color: hsl(var(--text-main));
+}
+
+.adminToggle {
+    background: none;
+    border: 1px solid hsl(var(--text-light));
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+.adminControls {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: hsla(var(--primary), 0.1);
+    border-radius: var(--radius);
+}
+
+.addBtn {
+    background: hsl(var(--primary));
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2.5rem;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    background-color: #ddd;
+}
+
+.content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.5rem;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: hsl(var(--primary));
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: hsl(var(--text-main));
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: hsl(var(--text-light));
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.detailsBtn {
+    width: 100%;
+    padding: 0.8rem;
+    background: transparent;
+    border: 2px solid hsl(var(--text-main));
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.detailsBtn:hover {
+    background: hsl(var(--text-main));
+    color: white;
+}

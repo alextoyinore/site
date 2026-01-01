@@ -1,0 +1,63 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.container h1 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 3rem;
+    color: hsl(var(--text-main));
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.albumCard {
+    text-decoration: none;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.albumCard:hover {
+    transform: translateY(-5px);
+}
+
+.coverImage {
+    height: 250px;
+    overflow: hidden;
+}
+
+.coverImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.albumCard:hover .coverImage img {
+    transform: scale(1.05);
+}
+
+.albumInfo {
+    padding: 1.5rem;
+}
+
+.albumInfo h3 {
+    font-size: 1.2rem;
+    color: hsl(var(--text-main));
+    margin-bottom: 0.5rem;
+}
+
+.albumInfo p {
+    color: hsl(var(--text-light));
+    font-size: 0.9rem;
+}

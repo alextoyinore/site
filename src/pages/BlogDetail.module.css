@@ -1,0 +1,147 @@
+.article {
+    min-height: 100vh;
+}
+
+.hero {
+    height: 50vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: white;
+}
+
+.heroContent {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+}
+
+.backLinkHero {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.backLinkHero:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.heroContent h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.meta {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: hsl(var(--text-main));
+}
+
+/* Block Styles */
+.blockHeader {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: hsl(var(--text-main));
+    font-weight: 700;
+}
+
+.blockParagraph {
+    margin-bottom: 1.5rem;
+}
+
+.blockList {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.blockList li {
+    margin-bottom: 0.5rem;
+}
+
+.blockQuote {
+    border-left: 4px solid hsl(var(--primary));
+    padding: 1rem 0 1rem 2rem;
+    margin: 2rem 0;
+    font-style: italic;
+    background: #f9fafb;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.blockQuote p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #374151;
+    margin: 0;
+}
+
+.blockQuote cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-style: normal;
+}
+
+.blockImage {
+    margin: 3rem 0;
+}
+
+.blockImage img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.blockImage figcaption {
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.tableWrapper {
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+.blockTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.blockTable td {
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .heroContent h1 {
+        font-size: 2.5rem;
+    }
+}

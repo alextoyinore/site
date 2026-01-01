@@ -1,0 +1,66 @@
+[
+    {
+        "id": "outreach-2024",
+        "title": "Community Outreach 2024",
+        "date": "2024-11-20",
+        "cover": "https://picsum.photos/seed/outreach/800/600",
+        "images": [
+            {
+                "src": "https://picsum.photos/seed/outreach1/800/600",
+                "alt": "Distribution of supplies"
+            },
+            {
+                "src": "https://picsum.photos/seed/outreach2/800/600",
+                "alt": "Medical checkups"
+            },
+            {
+                "src": "https://picsum.photos/seed/outreach3/800/600",
+                "alt": "Community gathering"
+            },
+            {
+                "src": "https://picsum.photos/seed/outreach4/800/600",
+                "alt": "Volunteers at work"
+            }
+        ]
+    },
+    {
+        "id": "fundraising-gala",
+        "title": "Annual Fundraising Gala",
+        "date": "2024-12-15",
+        "cover": "https://picsum.photos/seed/gala/800/600",
+        "images": [
+            {
+                "src": "https://picsum.photos/seed/gala1/800/600",
+                "alt": "Opening speech"
+            },
+            {
+                "src": "https://picsum.photos/seed/gala2/800/600",
+                "alt": "Awards presentation"
+            },
+            {
+                "src": "https://picsum.photos/seed/gala3/800/600",
+                "alt": "Guests mingling"
+            }
+        ]
+    },
+    {
+        "id": "school-visit",
+        "title": "School Visitation Project",
+        "date": "2024-10-05",
+        "cover": "https://picsum.photos/seed/school/800/600",
+        "images": [
+            {
+                "src": "https://picsum.photos/seed/school1/800/600",
+                "alt": "Classroom session"
+            },
+            {
+                "src": "https://picsum.photos/seed/school2/800/600",
+                "alt": "Library donation"
+            },
+            {
+                "src": "https://picsum.photos/seed/school3/800/600",
+                "alt": "Students reading"
+            }
+        ]
+    }
+]

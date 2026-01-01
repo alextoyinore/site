@@ -1,0 +1,170 @@
+.hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    max-width: 1200px;
+    margin: 6rem auto 0;
+    /* Added margin-top to clear fixed navbar if desired, or just space it out */
+    min-height: 85vh;
+}
+
+@media (min-width: 968px) {
+    .hero {
+        grid-template-columns: 1.2fr 1fr;
+        padding: 2rem;
+    }
+}
+
+.badge {
+    display: inline-block;
+    background-color: hsla(var(--primary), 0.1);
+    color: hsl(var(--primary));
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.title {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: hsl(var(--text-main));
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 4.5rem;
+    }
+}
+
+.highlight {
+    color: hsl(var(--primary));
+    position: relative;
+    z-index: 1;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background-color: hsla(var(--secondary), 0.5);
+    z-index: -1;
+    transform: skewX(-10deg);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: hsl(var(--text-light));
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    line-height: 1.7;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.primaryBtn {
+    background-color: hsl(var(--primary));
+    color: white;
+    box-shadow: 0 4px 15px hsla(var(--primary), 0.3);
+}
+
+.primaryBtn:hover {
+    background-color: hsl(var(--primary-dark));
+    transform: translateY(-2px);
+}
+
+.secondaryBtn {
+    background-color: transparent;
+    color: hsl(var(--text-main));
+    border: 2px solid hsl(var(--text-main));
+    gap: 0.5rem;
+}
+
+.secondaryBtn:hover {
+    background-color: hsl(var(--text-main));
+    color: white;
+    transform: translateY(-2px);
+}
+
+.imageWrapper {
+    position: relative;
+}
+
+.heroImage {
+    border-radius: 24px;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transform: rotate(2deg);
+    transition: transform 0.3s ease;
+}
+
+.heroImage:hover {
+    transform: rotate(0deg);
+}
+
+.statCard {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: float 4s ease-in-out infinite;
+}
+
+.statNumber {
+    font-size: 2rem;
+    font-weight: 800;
+    color: hsl(var(--secondary));
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: hsl(var(--text-light));
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}

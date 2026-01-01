@@ -1,0 +1,76 @@
+.section {
+    padding: 5rem 2rem;
+    background-color: hsl(var(--text-main));
+    /* Dark background */
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+
+    .content {
+        max-width: 50%;
+    }
+
+    .form {
+        width: 45%;
+    }
+}
+
+.content h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.content p {
+    color: hsla(0, 0%, 100%, 0.7);
+    line-height: 1.5;
+}
+
+.form {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+.form input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 1rem;
+}
+
+.form input:focus {
+    outline: 2px solid hsl(var(--primary));
+}
+
+.form button {
+    background-color: hsl(var(--primary));
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form button:hover {
+    background-color: hsl(var(--primary-dark));
+}

@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Annual Fundraising Gala",
+        "date": "2024-12-15",
+        "location": "Civic Center, Lagos",
+        "description": "Join us for an evening of music, art, and giving back to support our education initiatives.",
+        "image": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": 2,
+        "title": "Community Health Outreach",
+        "date": "2024-11-20",
+        "location": "Ikeja Community Hall",
+        "description": "Free medical checkups and health education for women and children.",
+        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": 3,
+        "title": "Tech Skills Workshop",
+        "date": "2024-10-10",
+        "location": "Digital Hub, Yaba",
+        "description": "Empowering young girls with coding and digital literacy skills.",
+        "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1000"
+    }
+]

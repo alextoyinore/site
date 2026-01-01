@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Global Relief Fund",
+        "logo": "https://images.unsplash.com/photo-1554200876-56c2f25224fa?auto=format&fit=crop&q=80&w=200",
+        "website": "https://example.com"
+    },
+    {
+        "id": 2,
+        "name": "Tech for Good",
+        "logo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=200",
+        "website": "https://example.com"
+    },
+    {
+        "id": 3,
+        "name": "Education First",
+        "logo": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=200",
+        "website": "https://example.com"
+    },
+    {
+        "id": 4,
+        "name": "Health Alliance",
+        "logo": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=200",
+        "website": "https://example.com"
+    },
+    {
+        "id": 5,
+        "name": "Sustainable Future",
+        "logo": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=200",
+        "website": "https://example.com"
+    }
+]

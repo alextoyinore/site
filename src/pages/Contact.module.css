@@ -1,0 +1,129 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.header h1 {
+    font-size: 3rem;
+    color: hsl(var(--text-main));
+    margin-bottom: 1rem;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 900px) {
+    .content {
+        grid-template-columns: 1fr 1.5fr;
+    }
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.infoItem {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.icon {
+    color: hsl(var(--primary));
+    flex-shrink: 0;
+}
+
+.infoItem h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: hsl(var(--text-main));
+}
+
+.infoItem p {
+    color: hsl(var(--text-light));
+    line-height: 1.6;
+}
+
+.formWrapper {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.group label {
+    font-weight: 500;
+    color: hsl(var(--text-main));
+}
+
+.group input,
+.group textarea {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.group input:focus,
+.group textarea:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+}
+
+.submitBtn {
+    background: hsl(var(--primary));
+    color: white;
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.submitBtn:hover {
+    background: hsl(var(--primary-dark));
+}
+
+.success {
+    text-align: center;
+    padding: 2rem;
+}
+
+.success h2 {
+    color: hsl(var(--secondary));
+    margin-bottom: 1rem;
+}
+
+.resetBtn {
+    margin-top: 1rem;
+    text-decoration: underline;
+    color: hsl(var(--primary));
+    background: none;
+}

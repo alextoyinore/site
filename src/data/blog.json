@@ -1,0 +1,83 @@
+[
+    {
+        "id": 1,
+        "title": "Empowering Communities Through Education",
+        "author": "Dr. Sarah Johnson",
+        "date": "2024-03-15",
+        "image": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=1000",
+        "excerpt": "Education is the key to unlocking potential. Read about our latest initiatives...",
+        "featured": true,
+        "content": {
+            "time": 1710500000000,
+            "blocks": [
+                {
+                    "type": "header",
+                    "data": {
+                        "text": "The Power of Knowledge",
+                        "level": 2
+                    }
+                },
+                {
+                    "type": "paragraph",
+                    "data": {
+                        "text": "At AADI, we believe that education is a fundamental human right. Over the past year, we have launched several programs aimed at bringing quality education to underprivileged children."
+                    }
+                },
+                {
+                    "type": "quote",
+                    "data": {
+                        "text": "Education is the most powerful weapon which you can use to change the world.",
+                        "caption": "Nelson Mandela",
+                        "alignment": "left"
+                    }
+                },
+                {
+                    "type": "paragraph",
+                    "data": {
+                        "text": "Our new 'School on Wheels' initiative reaches remote villages where schools are inaccessible."
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 2,
+        "title": "Clean Water Project: A Success Story",
+        "author": "Mark Davidson",
+        "date": "2024-02-28",
+        "image": "https://images.unsplash.com/photo-1574482620266-b6b47c4581df?auto=format&fit=crop&q=80&w=1000",
+        "excerpt": "Access to clean water changes lives. See the impact of our recent project...",
+        "featured": true,
+        "content": {
+            "time": 1709100000000,
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "data": {
+                        "text": "Water is life. Yet, millions suffer from water scarcity."
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 3,
+        "title": "Volunteer Spotlight: Jane's Journey",
+        "author": "Editorial Team",
+        "date": "2024-01-10",
+        "image": "https://images.unsplash.com/photo-1542833180-290883bbaa95?auto=format&fit=crop&q=80&w=1000",
+        "excerpt": "Meet Jane, who has dedicated 5 years to serving our mission...",
+        "featured": false,
+        "content": {
+            "time": 1704800000000,
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "data": {
+                        "text": "Volunteers are the backbone of AADI."
+                    }
+                }
+            ]
+        }
+    }
+]

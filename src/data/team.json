@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Sarah Johnson",
+        "role": "Founder & Executive Director",
+        "bio": "Sarah founded AADI with a vision to empower rural communities. She has over 15 years of experience in international development.",
+        "category": "founder",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+        "id": 2,
+        "name": "David Chen",
+        "role": "Board Chair",
+        "bio": "David brings strategic leadership from the tech sector to help steer AADI's mission.",
+        "category": "board",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+        "id": 3,
+        "name": "Dr. Amina Okoro",
+        "role": "Board Member",
+        "bio": "A public health expert dedicated to improving healthcare access in underserved regions.",
+        "category": "board",
+        "image": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+        "id": 4,
+        "name": "Michael Ross",
+        "role": "Operations Manager",
+        "bio": "Ensures our programs run smoothly and effectively on the ground.",
+        "category": "management",
+        "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400"
+    },
+    {
+        "id": 5,
+        "name": "Priya Patel",
+        "role": "Program Director",
+        "bio": "Oversees the design and implementation of our education and empowerment initiatives.",
+        "category": "management",
+        "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400"
+    }
+]
