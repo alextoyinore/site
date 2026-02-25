@@ -4,6 +4,12 @@
     padding: 4rem 2rem;
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 3rem 0.75rem;
+    }
+}
+
 .history {
     margin-bottom: 5rem;
     text-align: left;
