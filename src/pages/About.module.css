@@ -6,7 +6,7 @@
 
 .history {
     margin-bottom: 5rem;
-    text-align: center;
+    text-align: left;
 }
 
 .history h1 {
@@ -18,9 +18,42 @@
 .history p {
     font-size: 1.1rem;
     color: hsl(var(--text-main));
-    max-width: 700px;
-    margin: 0 auto 1.5rem;
+    max-width: 800px;
+    margin-bottom: 1.5rem;
     line-height: 1.8;
+}
+
+.programList {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+}
+
+.programList li {
+    font-size: 1.1rem;
+    color: hsl(var(--text-main));
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.6;
+}
+
+.programList li::before {
+    content: "•";
+    color: hsl(var(--primary));
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.ctaText {
+    font-weight: 500;
+    color: hsl(var(--primary));
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: hsla(var(--primary), 0.05);
+    border-radius: var(--radius);
+    border-left: 4px solid hsl(var(--primary));
 }
 
 .team h2 {

@@ -1,42 +1,30 @@
 [
     {
         "id": 1,
-        "name": "Sarah Johnson",
-        "role": "Founder & Executive Director",
-        "bio": "Sarah founded AADI with a vision to empower rural communities. She has over 15 years of experience in international development.",
-        "category": "founder",
-        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400"
+        "name": "Mrs. Comfort Joke Abimbola",
+        "role": "Trustee / Nursing Professional / Entrepreneur",
+        "bio": "Mrs. Comfort Joke Abimbola is a seasoned Nursing professional and an entrepreneur with a strong passion for social welfare and Community Health Care. Her career in Nursing reflects compassion, discipline, and service to humanity, while her entrepreneurial engagement underscores empowerment, self-reliance, and sustainability.",
+        "category": "board"
     },
     {
         "id": 2,
-        "name": "David Chen",
-        "role": "Board Chair",
-        "bio": "David brings strategic leadership from the tech sector to help steer AADI's mission.",
-        "category": "board",
-        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400"
+        "name": "Mrs. Margaret Adekemi Falade",
+        "role": "Trustee / Compliance Manager",
+        "bio": "Mrs. Margaret Adekemi Falade is an experienced Compliance Manager with deep expertise in regulatory frameworks, governance, and risk management. Her professional competence ensures that AADI operates within approved standards, adheres strictly to regulations, and maintains transparency and accountability.",
+        "category": "board"
     },
     {
         "id": 3,
-        "name": "Dr. Amina Okoro",
-        "role": "Board Member",
-        "bio": "A public health expert dedicated to improving healthcare access in underserved regions.",
-        "category": "board",
-        "image": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=400"
+        "name": "Miss Abigail Olubukola Abimbola",
+        "role": "Trustee / Business Continuity Manager",
+        "bio": "Miss Abigail Olubukola Abimbola is a Business Continuity Manager with specialized skills in strategic planning, organizational resilience, and risk mitigation. Her expertise supports the sustainability and long-term viability of AADI’s programs.",
+        "category": "board"
     },
     {
         "id": 4,
-        "name": "Michael Ross",
-        "role": "Operations Manager",
-        "bio": "Ensures our programs run smoothly and effectively on the ground.",
-        "category": "management",
-        "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 5,
-        "name": "Priya Patel",
-        "role": "Program Director",
-        "bio": "Oversees the design and implementation of our education and empowerment initiatives.",
-        "category": "management",
-        "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400"
+        "name": "Chief Magistrate ‘Funmi Edwin",
+        "role": "Trustee / Barrister and Solicitor @ Law",
+        "bio": "Mrs. ‘Funmi Edwin is a legal practitioner with vast experience in law, justice administration, adjudication, protocol, youth focused ministry and advocacy, social welfare project planning, and governance. She is a staunch advocate for Child Rights protection.",
+        "category": "board"
     }
 ]

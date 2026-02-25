@@ -1,26 +1,34 @@
 [
     {
         "id": 1,
-        "title": "Annual Fundraising Gala",
-        "date": "2024-12-15",
-        "location": "Civic Center, Lagos",
-        "description": "Join us for an evening of music, art, and giving back to support our education initiatives.",
-        "image": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1000"
+        "title": "Women Empowerment Workshop",
+        "date": "2024-07-15",
+        "location": "Akure Civic Center, Ondo State",
+        "description": "A hands-on workshop focused on vocational skills and financial literacy for vulnerable women.",
+        "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=1000"
     },
     {
         "id": 2,
-        "title": "Community Health Outreach",
-        "date": "2024-11-20",
-        "location": "Ikeja Community Hall",
-        "description": "Free medical checkups and health education for women and children.",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000"
+        "title": "Educational Scholarship Award Ceremony",
+        "date": "2024-08-20",
+        "location": "AADI Head Office, Akure",
+        "description": "Celebrating the academic achievements of our scholarship beneficiaries and handing out school supplies.",
+        "image": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1000"
     },
     {
         "id": 3,
-        "title": "Tech Skills Workshop",
-        "date": "2024-10-10",
-        "location": "Digital Hub, Yaba",
-        "description": "Empowering young girls with coding and digital literacy skills.",
-        "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1000"
+        "title": "Community Health and Welfare Check",
+        "date": "2024-09-10",
+        "location": "Oda Road Community Hall, Akure",
+        "description": "Free medical screening and distribution of essential living supplies to the elderly and indigent.",
+        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+        "id": 4,
+        "title": "Gender Equality Advocacy Walk",
+        "date": "2024-10-05",
+        "location": "Central Market to State Secretariat, Akure",
+        "description": "Raising awareness and calling for social justice for the vulnerable members of our society.",
+        "image": "https://images.unsplash.com/photo-1573164713988-cb9a1c6a6676?auto=format&fit=crop&q=80&w=1000"
     }
 ]
