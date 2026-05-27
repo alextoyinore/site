@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './Contact.module.css';
 
 const Contact = () => {
@@ -19,13 +20,29 @@ const Contact = () => {
         e.preventDefault();
         setStatus('submitting');
 
-        // Simulate API call to updated contact.php
-        /*
-        await fetch('/contact.php', {
-            method: 'POST',
-            body: JSON.stringify({ ...formData, type: 'inquiry' })
-        });
-        */
+        if (isSupabaseConfigured) {
+            try {
+                const { error } = await supabase
+                    .from('contacts')
+                    .insert([
+                        {
+                            name: formData.name,
+                            email: formData.email,
+                            subject: formData.subject,
+                            message: formData.message
+                        }
+                    ]);
+                if (error) throw error;
+                setStatus('success');
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                return;
+            } catch (error) {
+                console.error('Error submitting contact message to Supabase:', error);
+                alert('Could not submit your message. Please try again.');
+                setStatus('error');
+                return;
+            }
+        }
 
         setTimeout(() => {
             console.log('Contact Data:', formData);

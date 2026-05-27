@@ -1,35 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Plus } from 'lucide-react';
+import { Calendar, MapPin } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './Events.module.css';
 import initialEvents from '../data/events.json';
 
+const getEventSnippet = (description) => {
+    if (!description) return '';
+    if (typeof description === 'string') return description;
+    if (description.blocks && description.blocks.length > 0) {
+        const textBlocks = description.blocks.filter(b => b.type === 'paragraph' || b.type === 'header');
+        if (textBlocks.length > 0) {
+            return textBlocks[0].data.text;
+        }
+    }
+    return '';
+};
+
 const Events = () => {
-    const [events, setEvents] = useState(initialEvents);
-    // Simulating Admin View
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            if (isSupabaseConfigured) {
+                try {
+                    const { data, error } = await supabase
+                        .from('events')
+                        .select('*')
+                        .order('date', { ascending: true });
+                    if (error) throw error;
+                    setEvents(data || []);
+                    return;
+                } catch (error) {
+                    console.error('Error fetching events from Supabase:', error);
+                }
+            }
+            setEvents(initialEvents);
+        };
+        fetchEvents();
+    }, []);
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1>Upcoming Events</h1>
-                <button className={styles.adminToggle} onClick={() => setIsAdmin(!isAdmin)}>
-                    {isAdmin ? 'Exit Admin' : 'Admin View'}
-                </button>
             </div>
-
-            {isAdmin && (
-                <div className={styles.adminControls}>
-                    <button className={styles.addBtn}>
-                        <Plus size={18} /> Post New Event
-                    </button>
-                </div>
-            )}
 
             <div className={styles.grid}>
                 {events.map((event) => (
                     <div key={event.id} className={styles.card}>
-                        <div className={styles.image} style={{ backgroundImage: `url(${event.image})` }}></div>
+                        <div className={styles.image} style={{ backgroundImage: `url(${event.image || 'https://via.placeholder.com/400x250'})` }}></div>
                         <div className={styles.content}>
                             <div className={styles.date}>
                                 <Calendar size={16} /> {new Date(event.date).toLocaleDateString()}
@@ -38,7 +58,7 @@ const Events = () => {
                             <div className={styles.location}>
                                 <MapPin size={16} /> {event.location}
                             </div>
-                            <p>{event.description}</p>
+                            <p dangerouslySetInnerHTML={{ __html: getEventSnippet(event.description) }}></p>
                             <Link to={`/events/${event.id}`} className={styles.detailsBtn}>View Details</Link>
                         </div>
                     </div>

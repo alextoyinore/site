@@ -1,8 +1,31 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './Blog.module.css';
 import blogData from '../data/blog.json';
 
 const Blog = () => {
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            if (isSupabaseConfigured) {
+                try {
+                    const { data, error } = await supabase
+                        .from('blogs')
+                        .select('*')
+                        .order('date', { ascending: false });
+                    if (error) throw error;
+                    setPosts(data || []);
+                    return;
+                } catch (error) {
+                    console.error('Error fetching blogs, using fallback:', error);
+                }
+            }
+            setPosts(blogData);
+        };
+        fetchBlogs();
+    }, []);
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -11,7 +34,7 @@ const Blog = () => {
             </header>
 
             <div className={styles.grid}>
-                {blogData.map(post => (
+                {posts.map(post => (
                     <div key={post.id} className={styles.card}>
                         <div className={styles.imageWrapper}>
                             <img src={post.image || 'https://via.placeholder.com/400x250'} alt={post.title} />

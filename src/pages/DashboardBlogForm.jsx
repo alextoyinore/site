@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Save, ArrowLeft } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import blogData from '../data/blog.json';
 import Editor from '../components/Editor';
@@ -19,14 +20,38 @@ const DashboardBlogForm = () => {
         featured: false,
         content: { blocks: [] }
     });
+    const [loading, setLoading] = useState(isEditing);
 
     useEffect(() => {
-        if (isEditing) {
-            const post = blogData.find(p => p.id === parseInt(id));
-            if (post) {
-                setFormData(post);
+        const loadPost = async () => {
+            if (isEditing) {
+                setLoading(true);
+                if (isSupabaseConfigured) {
+                    try {
+                        const queryId = isNaN(id) ? id : parseInt(id);
+                        const { data, error } = await supabase
+                            .from('blogs')
+                            .select('*')
+                            .eq('id', queryId)
+                            .single();
+                        if (error) throw error;
+                        if (data) {
+                            setFormData(data);
+                            setLoading(false);
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching blog post:', error);
+                    }
+                }
+                const post = blogData.find(p => p.id === parseInt(id));
+                if (post) {
+                    setFormData(post);
+                }
+                setLoading(false);
             }
-        }
+        };
+        loadPost();
     }, [id, isEditing]);
 
     const handleChange = (e) => {
@@ -41,12 +66,56 @@ const DashboardBlogForm = () => {
         setFormData(prev => ({ ...prev, content: data }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const payload = {
+            title: formData.title,
+            author: formData.author,
+            date: formData.date,
+            excerpt: formData.excerpt,
+            image: formData.image,
+            featured: formData.featured,
+            content: formData.content
+        };
+
+        if (isSupabaseConfigured) {
+            try {
+                if (isEditing) {
+                    const queryId = isNaN(id) ? id : parseInt(id);
+                    const { error } = await supabase
+                        .from('blogs')
+                        .update(payload)
+                        .eq('id', queryId);
+                    if (error) throw error;
+                } else {
+                    const { error } = await supabase
+                        .from('blogs')
+                        .insert([payload]);
+                    if (error) throw error;
+                }
+                alert('Post saved successfully!');
+                navigate('/dashboard/blogs');
+                return;
+            } catch (error) {
+                console.error('Error saving blog post to Supabase:', error);
+                alert('Could not save post to database. Please try again.');
+                return;
+            }
+        }
+
         console.log('Saved Blog Post:', formData);
-        alert('Post saved successfully!');
+        alert('Post saved successfully! (Simulation)');
         navigate('/dashboard/blogs');
     };
+
+    if (loading) {
+        return (
+            <div className={styles.container} style={{ textAlign: 'center', padding: '3rem' }}>
+                <p>Loading post data...</p>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>

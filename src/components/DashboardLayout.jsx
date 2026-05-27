@@ -1,11 +1,20 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Calendar, Users, Settings, LogOut, Home, Heart, Briefcase, Image, FileText } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardLayout.module.css';
 
 const DashboardLayout = ({ children }) => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+    const handleLogout = async () => {
+        if (isSupabaseConfigured) {
+            await supabase.auth.signOut();
+        }
+        navigate('/login');
+    };
 
     const menuItems = [
         { name: 'Overview', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
@@ -71,7 +80,7 @@ const DashboardLayout = ({ children }) => {
                                 minWidth: '150px',
                                 zIndex: 100
                             }}>
-                                <button className={styles.logoutBtn} style={{ width: '100%', justifyContent: 'flex-start' }}>
+                                <button className={styles.logoutBtn} onClick={handleLogout} style={{ width: '100%', justifyContent: 'flex-start' }}>
                                     <LogOut size={18} />
                                     <span>Logout</span>
                                 </button>

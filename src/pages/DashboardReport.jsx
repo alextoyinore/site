@@ -1,19 +1,106 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Save, FileText } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import eventsData from '../data/events.json';
 import Editor from '../components/Editor';
 
 const DashboardReport = () => {
+    const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState('');
     const [reportContent, setReportContent] = useState({ blocks: [] });
 
-    const handleSave = () => {
+    useEffect(() => {
+        const fetchEvents = async () => {
+            if (isSupabaseConfigured) {
+                try {
+                    const { data, error } = await supabase
+                        .from('events')
+                        .select('id, title')
+                        .order('date', { ascending: false });
+                    if (error) throw error;
+                    if (data) {
+                        setEvents(data);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error loading events for reporting:', error);
+                }
+            }
+            setEvents(eventsData);
+        };
+        fetchEvents();
+    }, []);
+
+    // Load existing report content when an event is selected
+    useEffect(() => {
+        const loadReport = async () => {
+            if (!selectedEvent) {
+                setReportContent({ blocks: [] });
+                return;
+            }
+            if (isSupabaseConfigured) {
+                try {
+                    const eventId = isNaN(selectedEvent) ? selectedEvent : parseInt(selectedEvent);
+                    const { data, error } = await supabase
+                        .from('reports')
+                        .select('content')
+                        .eq('event_id', eventId)
+                        .maybeSingle();
+                    if (error) throw error;
+                    if (data && data.content) {
+                        setReportContent(data.content);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error fetching event report:', error);
+                }
+            }
+            setReportContent({ blocks: [] });
+        };
+        loadReport();
+    }, [selectedEvent]);
+
+    const handleSave = async () => {
         if (!selectedEvent) return alert('Please select an event');
         if (!reportContent.blocks || reportContent.blocks.length === 0) return alert('Report content cannot be empty');
 
-        console.log('Saving report for event', selectedEvent, reportContent);
-        alert('Report Saved Successfully!');
+        if (isSupabaseConfigured) {
+            try {
+                const eventId = isNaN(selectedEvent) ? selectedEvent : parseInt(selectedEvent);
+                // Check if a report already exists
+                const { data: existingReport } = await supabase
+                    .from('reports')
+                    .select('id')
+                    .eq('event_id', eventId)
+                    .maybeSingle();
+
+                if (existingReport) {
+                    const { error } = await supabase
+                        .from('reports')
+                        .update({ content: reportContent })
+                        .eq('id', existingReport.id);
+                    if (error) throw error;
+                } else {
+                    const { error } = await supabase
+                        .from('reports')
+                        .insert([{ event_id: eventId, content: reportContent }]);
+                    if (error) throw error;
+                }
+
+                alert('Report Saved Successfully!');
+                setReportContent({ blocks: [] });
+                setSelectedEvent('');
+                return;
+            } catch (error) {
+                console.error('Error saving report to Supabase:', error);
+                alert('Could not save report to database. Please try again.');
+                return;
+            }
+        }
+
+        console.log('Saving report for event (Simulation):', selectedEvent, reportContent);
+        alert('Report Saved Successfully! (Simulation)');
         setReportContent({ blocks: [] });
         setSelectedEvent('');
     };
@@ -36,7 +123,7 @@ const DashboardReport = () => {
                         style={{ width: '100%', padding: '0.8rem', border: '1px solid #ddd', borderRadius: '8px' }}
                     >
                         <option value="">-- Choose an Event --</option>
-                        {eventsData.map(event => (
+                        {events.map(event => (
                             <option key={event.id} value={event.id}>{event.title}</option>
                         ))}
                     </select>

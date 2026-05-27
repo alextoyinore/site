@@ -1,8 +1,31 @@
+import { useState, useEffect } from 'react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './Team.module.css';
 import teamData from '../data/team.json';
 
 const Team = () => {
-    const board = teamData.filter(member => member.category === 'board');
+    const [members, setMembers] = useState([]);
+
+    useEffect(() => {
+        const fetchTeam = async () => {
+            if (isSupabaseConfigured) {
+                try {
+                    const { data, error } = await supabase
+                        .from('team')
+                        .select('*');
+                    if (error) throw error;
+                    setMembers(data || []);
+                    return;
+                } catch (error) {
+                    console.error('Error fetching team members from Supabase, using fallback:', error);
+                }
+            }
+            setMembers(teamData);
+        };
+        fetchTeam();
+    }, []);
+
+    const board = members.filter(member => member.category === 'board');
 
     const TeamSection = ({ title, members }) => (
         <div className={styles.section}>

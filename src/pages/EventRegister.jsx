@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './EventRegister.module.css';
 import events from '../data/events.json';
 
 const EventRegister = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const event = events.find(e => e.id.toString() === id);
-
+    
+    const [event, setEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -17,11 +19,34 @@ const EventRegister = () => {
     const [status, setStatus] = useState('');
 
     useEffect(() => {
-        if (!event) {
-            // Redirect or show error if event not found
-        }
-    }, [event]);
+        const fetchEvent = async () => {
+            setLoading(true);
+            if (isSupabaseConfigured) {
+                try {
+                    const queryId = isNaN(id) ? id : parseInt(id);
+                    const { data, error } = await supabase
+                        .from('events')
+                        .select('*')
+                        .eq('id', queryId)
+                        .single();
+                    if (error) throw error;
+                    if (data) {
+                        setEvent(data);
+                        setLoading(false);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error fetching event for registration:', error);
+                }
+            }
+            const fallbackEvent = events.find(e => e.id.toString() === id.toString());
+            setEvent(fallbackEvent || null);
+            setLoading(false);
+        };
+        fetchEvent();
+    }, [id]);
 
+    if (loading) return <div className={styles.container}>Loading registration form...</div>;
     if (!event) return <div className={styles.container}>Event not found</div>;
 
     const handleChange = (e) => {
@@ -32,30 +57,34 @@ const EventRegister = () => {
         e.preventDefault();
         setStatus('submitting');
 
-        try {
-            const response = await fetch('/contact.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    type: 'event_registration',
-                    message: `Registering for Event: ${event.title} (ID: ${event.id}). Attendees: ${formData.attendees}`
-                })
-            });
-
-            const result = await response.json();
-
-            if (result.status === 'success') {
+        if (isSupabaseConfigured) {
+            try {
+                const { error } = await supabase
+                    .from('event_registrations')
+                    .insert([
+                        {
+                            event_id: isNaN(event.id) ? null : parseInt(event.id),
+                            name: formData.name,
+                            email: formData.email,
+                            phone: formData.phone,
+                            attendees: parseInt(formData.attendees)
+                        }
+                    ]);
+                if (error) throw error;
                 setStatus('success');
-            } else {
-                alert('Error: ' + result.message);
+                return;
+            } catch (error) {
+                console.error('Error saving registration to Supabase:', error);
+                alert('Could not submit registration. Please try again.');
                 setStatus('error');
+                return;
             }
-        } catch (error) {
-            console.error(error);
-            alert('Network error.');
-            setStatus('error');
         }
+
+        // Simulate API call
+        setTimeout(() => {
+            setStatus('success');
+        }, 1500);
     };
 
     return (

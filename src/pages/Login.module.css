@@ -1,0 +1,177 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+    font-family: inherit;
+    padding: 1.5rem;
+}
+
+.glassCard {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.5px;
+}
+
+.logo h2 span {
+    color: #e879f9;
+}
+
+.logo p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.demoBanner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(234, 179, 8, 0.15);
+    border: 1px solid rgba(234, 179, 8, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    color: #fef08a;
+    font-size: 0.85rem;
+}
+
+.errorBanner {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.inputGroup label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.inputGroup input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.inputGroup input:focus {
+    outline: none;
+    border-color: #e879f9;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(232, 121, 249, 0.25);
+}
+
+.submitBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, #e879f9 0%, #a855f7 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    margin-top: 1rem;
+}
+
+.submitBtn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+.submitBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.extraActions {
+    text-align: center;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.demoBtn {
+    background: none;
+    border: none;
+    color: #e879f9;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.demoBtn:hover {
+    color: #f472b6;
+}
+
+.passwordWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.passwordWrapper input {
+    width: 100%;
+    padding-right: 2.8rem;
+}
+
+.eyeBtn {
+    position: absolute;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.eyeBtn:hover {
+    color: rgba(255, 255, 255, 0.9);
+}

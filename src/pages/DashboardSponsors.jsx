@@ -1,14 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import sponsorsData from '../data/sponsors.json';
 import Modal from '../components/Modal';
 
 const DashboardSponsors = () => {
-    const [sponsors, setSponsors] = useState(sponsorsData);
+    const [sponsors, setSponsors] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentSponsor, setCurrentSponsor] = useState({ id: null, name: '', level: 'Bronze Sponsor' });
+    const [loading, setLoading] = useState(true);
+
+    const fetchSponsors = async () => {
+        setLoading(true);
+        if (isSupabaseConfigured) {
+            try {
+                const { data, error } = await supabase
+                    .from('sponsors')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                if (data) {
+                    setSponsors(data);
+                    setLoading(false);
+                    return;
+                }
+            } catch (error) {
+                console.error('Error fetching dashboard sponsors:', error);
+            }
+        }
+        setSponsors(sponsorsData);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchSponsors();
+    }, []);
 
     const resetForm = () => {
         setCurrentSponsor({ id: null, name: '', level: 'Bronze Sponsor' });
@@ -26,29 +54,83 @@ const DashboardSponsors = () => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteSponsor = (id) => {
+    const handleDeleteSponsor = async (id) => {
         if (confirm('Are you sure you want to delete this sponsor?')) {
+            if (isSupabaseConfigured) {
+                try {
+                    const { error } = await supabase
+                        .from('sponsors')
+                        .delete()
+                        .eq('id', id);
+                    if (error) throw error;
+                    setSponsors(sponsors.filter(s => s.id !== id));
+                    return;
+                } catch (error) {
+                    console.error('Error deleting sponsor:', error);
+                    alert('Could not delete sponsor from database.');
+                    return;
+                }
+            }
             setSponsors(sponsors.filter(s => s.id !== id));
         }
     };
 
-    const handleSaveSponsor = (e) => {
+    const handleSaveSponsor = async (e) => {
         e.preventDefault();
+
+        if (isSupabaseConfigured) {
+            try {
+                if (isEditing) {
+                    const { error } = await supabase
+                        .from('sponsors')
+                        .update({
+                            name: currentSponsor.name,
+                            level: currentSponsor.level
+                        })
+                        .eq('id', currentSponsor.id);
+                    if (error) throw error;
+                    setSponsors(sponsors.map(s => s.id === currentSponsor.id ? { ...currentSponsor } : s));
+                } else {
+                    const payload = {
+                        name: currentSponsor.name,
+                        level: currentSponsor.level,
+                        logo: "https://via.placeholder.com/150"
+                    };
+                    const { data, error } = await supabase
+                        .from('sponsors')
+                        .insert([payload])
+                        .select();
+                    if (error) throw error;
+                    if (data && data.length > 0) {
+                        setSponsors([data[0], ...sponsors]);
+                    }
+                }
+                setIsModalOpen(false);
+                resetForm();
+                return;
+            } catch (error) {
+                console.error('Error saving sponsor:', error);
+                alert('Could not save sponsor to database.');
+                return;
+            }
+        }
 
         if (isEditing) {
             setSponsors(sponsors.map(s => s.id === currentSponsor.id ? { ...currentSponsor } : s));
         } else {
             const sponsorToAdd = {
-                id: sponsors.length + 1,
+                id: Date.now(),
                 ...currentSponsor,
-                logo: "https://via.placeholder.com/150" // Placeholder logo
+                logo: "https://via.placeholder.com/150"
             };
-            setSponsors([...sponsors, sponsorToAdd]);
+            setSponsors([sponsorToAdd, ...sponsors]);
         }
 
         setIsModalOpen(false);
         resetForm();
     };
+
+    if (loading) return <div className={styles.container}>Loading sponsors...</div>;
 
     return (
         <div className={styles.container}>

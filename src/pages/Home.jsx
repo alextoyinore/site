@@ -8,11 +8,62 @@ import DonateWidget from '../components/DonateWidget';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
+import { useEffect, useState } from 'react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import blogData from '../data/blog.json';
 
 const Home = () => {
-    // Get latest 3 featured posts
-    const featuredPosts = blogData.filter(p => p.featured).slice(0, 3);
+    const [featuredPosts, setFeaturedPosts] = useState([]);
+
+    useEffect(() => {
+        const loadFeatured = async () => {
+            let posts = [];
+            if (isSupabaseConfigured) {
+                try {
+                    // Try fetching featured blogs first
+                    const { data: featured, error: err1 } = await supabase
+                        .from('blogs')
+                        .select('*')
+                        .eq('featured', true)
+                        .order('date', { ascending: false })
+                        .limit(3);
+                    if (err1) throw err1;
+                    if (featured) posts = [...featured];
+
+                    // If less than 3, fetch regular blogs to fill
+                    if (posts.length < 3) {
+                        const needed = 3 - posts.length;
+                        const existingIds = posts.map(p => p.id);
+                        const { data: regular, error: err2 } = await supabase
+                            .from('blogs')
+                            .select('*')
+                            .order('date', { ascending: false })
+                            .limit(needed);
+                        if (err2) throw err2;
+                        if (regular) {
+                            const filtered = regular.filter(p => !existingIds.includes(p.id));
+                            posts = [...posts, ...filtered].slice(0, 3);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching featured blogs, using fallback:', error);
+                }
+            }
+
+            // If we still don't have 3 (or not configured), backfill from static blogData
+            if (posts.length < 3) {
+                const needed = 3 - posts.length;
+                const existingTitles = posts.map(p => p.title.toLowerCase());
+                const fallbackBlogs = blogData
+                    .filter(p => !existingTitles.includes(p.title.toLowerCase()))
+                    .slice(0, needed);
+                posts = [...posts, ...fallbackBlogs];
+            }
+
+            setFeaturedPosts(posts);
+        };
+        loadFeatured();
+    }, []);
 
     return (
         <div className={styles.container}>

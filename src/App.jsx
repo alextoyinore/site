@@ -28,30 +28,37 @@ import DashboardBlogs from './pages/DashboardBlogs';
 import DashboardBlogForm from './pages/DashboardBlogForm';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Login Route */}
+        <Route path="/login" element={<Login />} />
+
         {/* Dashboard Routes */}
         <Route path="/dashboard/*" element={
-          <DashboardLayout>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/events" element={<DashboardEvents />} />
-              <Route path="/events/new" element={<DashboardEventForm />} />
-              <Route path="/events/edit/:id" element={<DashboardEventForm />} />
-              <Route path="/blogs" element={<DashboardBlogs />} />
-              <Route path="/blogs/new" element={<DashboardBlogForm />} />
-              <Route path="/blogs/edit/:id" element={<DashboardBlogForm />} />
-              <Route path="/gallery" element={<DashboardGallery />} />
-              <Route path="/reports" element={<DashboardReport />} />
-              <Route path="/volunteers" element={<DashboardVolunteers />} />
-              <Route path="/sponsors" element={<DashboardSponsors />} />
-              <Route path="/donations" element={<DashboardDonations />} />
-              <Route path="/settings" element={<DashboardSettings />} />
-            </Routes>
-          </DashboardLayout>
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/events" element={<DashboardEvents />} />
+                <Route path="/events/new" element={<DashboardEventForm />} />
+                <Route path="/events/edit/:id" element={<DashboardEventForm />} />
+                <Route path="/blogs" element={<DashboardBlogs />} />
+                <Route path="/blogs/new" element={<DashboardBlogForm />} />
+                <Route path="/blogs/edit/:id" element={<DashboardBlogForm />} />
+                <Route path="/gallery" element={<DashboardGallery />} />
+                <Route path="/reports" element={<DashboardReport />} />
+                <Route path="/volunteers" element={<DashboardVolunteers />} />
+                <Route path="/sponsors" element={<DashboardSponsors />} />
+                <Route path="/donations" element={<DashboardDonations />} />
+                <Route path="/settings" element={<DashboardSettings />} />
+              </Routes>
+            </DashboardLayout>
+          </ProtectedRoute>
         } />
 
         {/* Public Site Routes */}

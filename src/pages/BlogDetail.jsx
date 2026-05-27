@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './BlogDetail.module.css';
 import blogData from '../data/blog.json';
 
@@ -59,7 +61,45 @@ const BlockRenderer = ({ block }) => {
 
 const BlogDetail = () => {
     const { id } = useParams();
-    const post = blogData.find(p => p.id === parseInt(id));
+    const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            setLoading(true);
+            if (isSupabaseConfigured) {
+                try {
+                    // Try parsing id to int if it is numerical for compatibility
+                    const queryId = isNaN(id) ? id : parseInt(id);
+                    const { data, error } = await supabase
+                        .from('blogs')
+                        .select('*')
+                        .eq('id', queryId)
+                        .single();
+                    if (error) throw error;
+                    if (data) {
+                        setPost(data);
+                        setLoading(false);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error fetching blog detail from Supabase, using fallback:', error);
+                }
+            }
+            const fallbackPost = blogData.find(p => p.id.toString() === id.toString());
+            setPost(fallbackPost || null);
+            setLoading(false);
+        };
+        fetchPost();
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className={styles.container} style={{ textAlign: 'center', padding: '5rem' }}>
+                <h2>Loading post...</h2>
+            </div>
+        );
+    }
 
     if (!post) {
         return (

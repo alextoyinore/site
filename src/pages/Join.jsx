@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './Join.module.css';
 
 const Join = () => {
@@ -18,6 +19,32 @@ const Join = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('submitting');
+
+        if (isSupabaseConfigured) {
+            try {
+                const { error } = await supabase
+                    .from('volunteers')
+                    .insert([
+                        {
+                            name: formData.name,
+                            email: formData.email,
+                            phone: formData.phone,
+                            role: formData.type,
+                            message: formData.message,
+                            status: 'Pending'
+                        }
+                    ]);
+                if (error) throw error;
+                setStatus('success');
+                setFormData({ name: '', email: '', phone: '', type: 'volunteer', message: '' });
+                return;
+            } catch (error) {
+                console.error('Error submitting volunteer application:', error);
+                alert('Could not submit application to the database. Please try again.');
+                setStatus('error');
+                return;
+            }
+        }
 
         // Simulate API call
         setTimeout(() => {

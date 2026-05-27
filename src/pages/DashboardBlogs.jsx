@@ -1,15 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import blogData from '../data/blog.json';
 
 const DashboardBlogs = () => {
-    const [posts, setPosts] = useState(blogData);
+    const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
 
-    const handleDelete = (id) => {
+    const fetchBlogs = async () => {
+        if (isSupabaseConfigured) {
+            try {
+                const { data, error } = await supabase
+                    .from('blogs')
+                    .select('*')
+                    .order('date', { ascending: false });
+                if (error) throw error;
+                if (data && data.length > 0) {
+                    setPosts(data);
+                    return;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard blogs:', error);
+            }
+        }
+        setPosts(blogData);
+    };
+
+    useEffect(() => {
+        fetchBlogs();
+    }, []);
+
+    const handleDelete = async (id) => {
         if (confirm('Are you sure you want to delete this post?')) {
+            if (isSupabaseConfigured) {
+                try {
+                    const { error } = await supabase
+                        .from('blogs')
+                        .delete()
+                        .eq('id', id);
+                    if (error) throw error;
+                    setPosts(posts.filter(p => p.id !== id));
+                    return;
+                } catch (error) {
+                    console.error('Error deleting blog:', error);
+                    alert('Could not delete the post from the database. Please try again.');
+                    return;
+                }
+            }
             setPosts(posts.filter(p => p.id !== id));
         }
     };
