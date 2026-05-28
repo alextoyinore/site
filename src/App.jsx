@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Programs from './pages/Programs';
+import ProgramDetail from './pages/ProgramDetail';
 import Events from './pages/Events';
 import Gallery from './pages/Gallery';
 import GalleryDetail from './pages/GalleryDetail';
@@ -26,6 +27,8 @@ import DashboardReport from './pages/DashboardReport';
 import DashboardEventForm from './pages/DashboardEventForm';
 import DashboardBlogs from './pages/DashboardBlogs';
 import DashboardBlogForm from './pages/DashboardBlogForm';
+import DashboardPrograms from './pages/DashboardPrograms';
+import DashboardProgramForm from './pages/DashboardProgramForm';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Login from './pages/Login';
@@ -50,6 +53,9 @@ function App() {
                 <Route path="/blogs" element={<DashboardBlogs />} />
                 <Route path="/blogs/new" element={<DashboardBlogForm />} />
                 <Route path="/blogs/edit/:id" element={<DashboardBlogForm />} />
+                <Route path="/programs" element={<DashboardPrograms />} />
+                <Route path="/programs/new" element={<DashboardProgramForm />} />
+                <Route path="/programs/edit/:id" element={<DashboardProgramForm />} />
                 <Route path="/gallery" element={<DashboardGallery />} />
                 <Route path="/reports" element={<DashboardReport />} />
                 <Route path="/volunteers" element={<DashboardVolunteers />} />
@@ -69,6 +75,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/team" element={<Team />} />
               <Route path="/programs" element={<Programs />} />
+              <Route path="/programs/:id" element={<ProgramDetail />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<BlogDetail />} />
               <Route path="/events" element={<Events />} />

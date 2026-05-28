@@ -126,6 +126,17 @@ CREATE TABLE IF NOT EXISTS reports (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 13. PROGRAMS TABLE
+CREATE TABLE IF NOT EXISTS programs (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    content JSONB DEFAULT '{"blocks": []}'::jsonb,
+    image TEXT,
+    color TEXT DEFAULT 'var(--primary)',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- ==========================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ==========================================
@@ -145,6 +156,7 @@ ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_registrations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE donations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE programs ENABLE ROW LEVEL SECURITY;
 
 -- Public Read access policies
 DROP POLICY IF EXISTS "Allow public read blogs" ON blogs;
@@ -182,6 +194,9 @@ CREATE POLICY "Allow public read donations" ON donations FOR SELECT USING (true)
 
 DROP POLICY IF EXISTS "Allow public read reports" ON reports;
 CREATE POLICY "Allow public read reports" ON reports FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read programs" ON programs;
+CREATE POLICY "Allow public read programs" ON programs FOR SELECT USING (true);
 
 -- Public Write access policies (for forms)
 DROP POLICY IF EXISTS "Allow public insert volunteers" ON volunteers;
@@ -232,6 +247,9 @@ CREATE POLICY "Allow full access for all operations donations" ON donations FOR 
 
 DROP POLICY IF EXISTS "Allow full access for all operations reports" ON reports;
 CREATE POLICY "Allow full access for all operations reports" ON reports FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow full access for all operations programs" ON programs;
+CREATE POLICY "Allow full access for all operations programs" ON programs FOR ALL USING (true) WITH CHECK (true);
 
 -- ==========================================
 -- SEED DATA
@@ -375,6 +393,13 @@ INSERT INTO donations (id, donor, amount, date, status) VALUES
 (1236, 'John Doe', 25.00, '2023-10-23', 'Completed')
 ON CONFLICT (id) DO NOTHING;
 
+-- Seed Programs
+INSERT INTO programs (id, title, description, color, image, content) VALUES
+(1, 'Girl Child Education', 'Scholarships and supplies for girls in rural areas to ensure they complete secondary education.', 'var(--primary)', 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=1000', '{"blocks": [{"type": "header", "data": {"text": "Empowering Girls Through Quality Education", "level": 2}}, {"type": "paragraph", "data": {"text": "In many rural communities, girl-child education is often cut short due to economic challenges, cultural biases, and lack of school supplies. AADI''s Girl Child Education initiative aims to eliminate these obstacles by providing full scholarships, academic materials, and hygiene resources."}}, {"type": "header", "data": {"text": "Core Program Pillars", "level": 3}}, {"type": "list", "data": {"style": "unordered", "items": ["Full tuition scholarships for secondary school girls in vulnerable positions.", "Distribution of reusable sanitary pads and hygiene kits to promote attendance.", "Annual distributions of backpacks, textbooks, and writing materials.", "After-school mentorship programs covering leadership, career planning, and health education."]}}, {"type": "paragraph", "data": {"text": "By ensuring girls complete their secondary education, we empower them to pursue higher career paths and make decisions that uplift their whole communities, breaking historical generational cycles of poverty."}}]}'::jsonb),
+(2, 'Women Entrepreneurship', 'Micro-grants and business training for women starting small businesses.', 'var(--accent)', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000', '{"blocks": [{"type": "header", "data": {"text": "Fostering Economic Independence & Self-Reliance", "level": 2}}, {"type": "paragraph", "data": {"text": "Women entrepreneurship is one of the most effective ways to drive local economic growth. This program provides seed grants, financial literacy workshops, and ongoing group-lending access to help women conceptualize and scale sustainable enterprises."}}, {"type": "header", "data": {"text": "Program Components", "level": 3}}, {"type": "list", "data": {"style": "unordered", "items": ["Business development training including bookkeeping and cost modeling.", "Access to interest-free micro-grants for initial equipment and inventory purchase.", "Peer support networks and monthly check-ins with business advisors.", "Market linkage platforms to showcase products to a wider consumer base."]}}, {"type": "paragraph", "data": {"text": "When a woman is financially self-sufficient, her entire family benefits from improved nutrition, healthcare, and educational access. We are proud to support over 150 local female-led start-ups."}}]}'::jsonb),
+(3, 'Health Outreach', 'Free medical checkups and malaria prevention supplies for communities.', 'var(--secondary)', 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000', '{"blocks": [{"type": "header", "data": {"text": "Providing Healthcare Support to Vulnerable Populations", "level": 2}}, {"type": "paragraph", "data": {"text": "Good health is the foundation of structural prosperity. Our medical outreach caravans bring free screening, primary healthcare diagnostics, and preventative resources directly to underserved rural regions."}}, {"type": "header", "data": {"text": "What We Provide", "level": 3}}, {"type": "list", "data": {"style": "unordered", "items": ["Free hypertension, diabetes, and basic health screenings.", "Distribution of long-lasting insecticide-treated bed nets to combat malaria.", "Maternal wellness kits and expert counseling on pre-natal/post-natal care.", "Free dispensing of doctor-prescribed essential medications."]}}, {"type": "paragraph", "data": {"text": "Our community outreach days occur quarterly, and we partner with voluntary doctors, nurses, and local clinics to ensure proper secondary follow-ups are booked for cases requiring ongoing care."}}]}'::jsonb)
+ON CONFLICT (id) DO NOTHING;
+
 -- Fix identity sequences for serial tables
 SELECT setval('blogs_id_seq', COALESCE((SELECT MAX(id)+1 FROM blogs), 1), false);
 SELECT setval('events_id_seq', COALESCE((SELECT MAX(id)+1 FROM events), 1), false);
@@ -384,3 +409,4 @@ SELECT setval('partners_id_seq', COALESCE((SELECT MAX(id)+1 FROM partners), 1), 
 SELECT setval('volunteers_id_seq', COALESCE((SELECT MAX(id)+1 FROM volunteers), 1), false);
 SELECT setval('donations_id_seq', COALESCE((SELECT MAX(id)+1 FROM donations), 1), false);
 SELECT setval('reports_id_seq', COALESCE((SELECT MAX(id)+1 FROM reports), 1), false);
+SELECT setval('programs_id_seq', COALESCE((SELECT MAX(id)+1 FROM programs), 1), false);

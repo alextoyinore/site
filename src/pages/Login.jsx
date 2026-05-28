@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogIn, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { LogIn, AlertCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './Login.module.css';
 
@@ -52,7 +52,13 @@ const Login = () => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.glowSphere1}></div>
+            <div className={styles.glowSphere2}></div>
             <div className={styles.glassCard}>
+                <Link to="/" className={styles.backLink}>
+                    <ArrowLeft size={16} />
+                    <span>Back to Website</span>
+                </Link>
                 <div className={styles.logo}>
                     <h2>AADI <span>Admin Portal</span></h2>
                     <p>Enter credentials to access the dashboard</p>

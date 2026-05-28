@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Users, Settings, LogOut, Home, Heart, Briefcase, Image, FileText } from 'lucide-react';
+import { LayoutDashboard, Calendar, Users, Settings, LogOut, Home, Heart, Briefcase, Image, FileText, BookOpen } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardLayout.module.css';
 
@@ -20,6 +20,7 @@ const DashboardLayout = ({ children }) => {
         { name: 'Overview', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
         { name: 'Events', path: '/dashboard/events', icon: <Calendar size={20} /> },
         { name: 'Blog', path: '/dashboard/blogs', icon: <FileText size={20} /> },
+        { name: 'Programs', path: '/dashboard/programs', icon: <BookOpen size={20} /> },
         { name: 'Gallery', path: '/dashboard/gallery', icon: <Image size={20} /> },
         { name: 'Reports', path: '/dashboard/reports', icon: <FileText size={20} /> },
         { name: 'Volunteers', path: '/dashboard/volunteers', icon: <Users size={20} /> },
