@@ -5,6 +5,7 @@ import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import eventsData from '../data/events.json';
 import Editor from '../components/Editor';
+import ImageUpload from '../components/ImageUpload';
 
 const DashboardEventForm = () => {
     const { id } = useParams();
@@ -15,6 +16,7 @@ const DashboardEventForm = () => {
         title: '',
         date: '',
         location: '',
+        image: '',
         description: { blocks: [] } // EditorJS structure
     });
     const [loading, setLoading] = useState(isEditing);
@@ -45,6 +47,7 @@ const DashboardEventForm = () => {
                                 title: event.title,
                                 date: event.date,
                                 location: event.location,
+                                image: event.image || '',
                                 description: descData
                             });
                             setLoading(false);
@@ -69,6 +72,7 @@ const DashboardEventForm = () => {
                         title: event.title,
                         date: event.date,
                         location: event.location,
+                        image: event.image || '',
                         description: descData
                     });
                 }
@@ -94,6 +98,7 @@ const DashboardEventForm = () => {
             title: formData.title,
             date: formData.date,
             location: formData.location,
+            image: formData.image || null,
             description: formData.description
         };
 
@@ -151,6 +156,19 @@ const DashboardEventForm = () => {
 
             <div style={{ background: 'white', padding: '2rem', borderRadius: '12px' }}>
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    
+                    {/* Event Flyer Banner Dropzone */}
+                    <div>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Event Flyer / Banner</label>
+                        <ImageUpload
+                            value={formData.image}
+                            onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                            aspect="banner"
+                            label="Drag and drop event flyer here, or click to browse"
+                            subLabel="Ideal size 1200x500 (PNG, JPG, or WEBP up to 5MB)"
+                        />
+                    </div>
+
                     <div>
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Event Title</label>
                         <input

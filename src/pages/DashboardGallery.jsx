@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Upload, Image as ImageIcon, Plus, Trash2, X, FolderPlus } from 'lucide-react';
+import { Upload, Image as ImageIcon, Plus, Trash2, X, FolderPlus, RefreshCw } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import staticAlbums from '../data/gallery.json';
+import ImageUpload from '../components/ImageUpload';
+import { uploadImageToCloudinary } from '../utils/cloudinary';
 
 // Generate a URL-safe slug from a string
 const toSlug = (str) =>
@@ -15,6 +17,7 @@ const DashboardGallery = () => {
     const [selectedAlbum, setSelectedAlbum] = useState('');
     const [galleryImages, setGalleryImages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [uploadingBatch, setUploadingBatch] = useState(false);
 
     // Create album modal state
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -114,31 +117,48 @@ const DashboardGallery = () => {
         alert('Album created! (Simulation)');
     };
 
-    // ── Upload photo to selected album ────────────────────────────────────────
-    const handleUpload = async () => {
+    // ── File selector triggers ────────────────────────────────────────────────
+    const handleUploadClick = () => {
         if (!selectedAlbum) return alert('Please select an album first.');
-        const url = prompt('Enter image URL:', 'https://picsum.photos/seed/new/800/600');
-        if (!url) return;
-        const altText = prompt('Enter image description (alt text):', 'Community photo');
+        document.getElementById('gallery-multi-file-input')?.click();
+    };
 
-        if (isSupabaseConfigured) {
-            try {
-                const { data, error } = await supabase
-                    .from('gallery_photos')
-                    .insert([{ album_id: selectedAlbum, src: url, alt: altText || '' }])
-                    .select();
-                if (error) throw error;
-                if (data && data.length > 0) {
-                    setGalleryImages(prev => [...prev, { id: data[0].id, url: data[0].src, alt: data[0].alt }]);
+    const handleFileSelect = async (e) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length === 0) return;
+
+        setUploadingBatch(true);
+        try {
+            for (const file of files) {
+                // Upload to Cloudinary
+                const uploadedUrl = await uploadImageToCloudinary(file);
+                const altText = file.name.split('.')[0] || 'Gallery photo';
+
+                if (isSupabaseConfigured) {
+                    const { data, error } = await supabase
+                        .from('gallery_photos')
+                        .insert([{ album_id: selectedAlbum, src: uploadedUrl, alt: altText }])
+                        .select();
+                    if (error) throw error;
+                    if (data && data.length > 0) {
+                        setGalleryImages(prev => [...prev, { id: data[0].id, url: data[0].src, alt: data[0].alt }]);
+                    }
+                } else {
+                    // Fallback simulated list entry
+                    setGalleryImages(prev => [...prev, { 
+                        id: Date.now() + Math.random(), 
+                        url: uploadedUrl, 
+                        alt: altText 
+                    }]);
                 }
-                return;
-            } catch (err) {
-                console.error('Error uploading photo:', err);
-                alert('Could not save image. Please try again.');
-                return;
             }
+        } catch (err) {
+            console.error('Error uploading batch images:', err);
+            alert(`Upload failed: ${err.message || 'Please check your connection.'}`);
+        } finally {
+            setUploadingBatch(false);
+            e.target.value = ''; // Reset input to allow selecting same file later
         }
-        setGalleryImages(prev => [...prev, { id: Date.now(), url, alt: altText || '' }]);
     };
 
     // ── Delete photo ──────────────────────────────────────────────────────────
@@ -172,6 +192,16 @@ const DashboardGallery = () => {
 
     return (
         <div className={styles.container}>
+            {/* Hidden native input for multi-file uploading */}
+            <input
+                type="file"
+                id="gallery-multi-file-input"
+                multiple
+                accept="image/*"
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+            />
+
             {/* Header */}
             <div className={styles.header}>
                 <h1 className={styles.title}>Gallery Management</h1>
@@ -179,9 +209,10 @@ const DashboardGallery = () => {
                     <button className={styles.actionBtn} onClick={() => setShowCreateModal(true)}>
                         <FolderPlus size={18} /> New Album
                     </button>
-                    <button className={styles.actionBtn} onClick={handleUpload} disabled={!selectedAlbum}
-                        style={{ opacity: selectedAlbum ? 1 : 0.5, cursor: selectedAlbum ? 'pointer' : 'not-allowed' }}>
-                        <Upload size={18} /> Upload Photo
+                    <button className={styles.actionBtn} onClick={handleUploadClick} disabled={!selectedAlbum || uploadingBatch}
+                        style={{ opacity: selectedAlbum && !uploadingBatch ? 1 : 0.5, cursor: selectedAlbum && !uploadingBatch ? 'pointer' : 'not-allowed' }}>
+                        {uploadingBatch ? <RefreshCw className={styles.spinner} size={18} style={{ animation: 'spin 1s linear infinite' }} /> : <Upload size={18} />} 
+                        {uploadingBatch ? 'Uploading...' : 'Upload Photos'}
                     </button>
                 </div>
             </div>
@@ -193,6 +224,7 @@ const DashboardGallery = () => {
                     value={selectedAlbum}
                     onChange={(e) => handleAlbumChange(e.target.value)}
                     style={{ width: '100%', maxWidth: '460px', padding: '0.8rem', border: '1px solid #ddd', borderRadius: '8px' }}
+                    disabled={uploadingBatch}
                 >
                     <option value="">-- Choose an Album --</option>
                     {albums.map(album => (
@@ -206,8 +238,20 @@ const DashboardGallery = () => {
                 )}
             </div>
 
-            {/* Photo grid */}
+            {/* Loading state for single album fetch */}
             {loading && <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>Loading photos...</div>}
+
+            {/* Uploading batch spinner banner */}
+            {uploadingBatch && (
+                <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem',
+                    background: '#e0f2fe', color: '#0369a1', border: '1px solid #bae6fd',
+                    padding: '1rem', borderRadius: '10px', marginBottom: '1.5rem'
+                }}>
+                    <RefreshCw size={20} style={{ animation: 'spin 1s linear infinite' }} />
+                    <span style={{ fontWeight: '500' }}>Processing and uploading your images to Cloudinary...</span>
+                </div>
+            )}
 
             {!loading && selectedAlbum && (
                 <div>
@@ -222,6 +266,7 @@ const DashboardGallery = () => {
                                     onClick={() => handleDeletePhoto(img.id)}
                                     title="Delete photo"
                                     style={{ position: 'absolute', top: '6px', right: '6px', background: 'rgba(220,38,38,0.85)', border: 'none', borderRadius: '6px', padding: '4px 6px', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center' }}
+                                    disabled={uploadingBatch}
                                 >
                                     <Trash2 size={14} />
                                 </button>
@@ -235,20 +280,20 @@ const DashboardGallery = () => {
 
                         {/* Upload placeholder */}
                         <div
-                            onClick={handleUpload}
+                            onClick={handleUploadClick}
                             title="Upload photo"
                             style={{ height: '160px', borderRadius: '10px', border: '2px dashed #ddd', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#aaa', gap: '0.5rem', transition: 'border-color 0.2s' }}
                             onMouseEnter={e => e.currentTarget.style.borderColor = 'hsl(var(--primary))'}
                             onMouseLeave={e => e.currentTarget.style.borderColor = '#ddd'}
                         >
                             <Plus size={28} />
-                            <span style={{ fontSize: '0.85rem' }}>Add Photo</span>
+                            <span style={{ fontSize: '0.85rem' }}>Add Photos</span>
                         </div>
 
-                        {galleryImages.length === 0 && (
+                        {galleryImages.length === 0 && !uploadingBatch && (
                             <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem', color: '#999' }}>
                                 <ImageIcon size={40} style={{ opacity: 0.2, marginBottom: '0.75rem' }} />
-                                <p>No photos in this album yet. Click Upload Photo to add some.</p>
+                                <p>No photos in this album yet. Click Upload Photos to add some.</p>
                             </div>
                         )}
                     </div>
@@ -258,7 +303,7 @@ const DashboardGallery = () => {
             {/* Create Album Modal */}
             {showCreateModal && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-                    <div style={{ background: 'white', borderRadius: '16px', padding: '2rem', width: '100%', maxWidth: '480px', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+                    <div style={{ background: 'white', borderRadius: '16px', padding: '2rem', width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                             <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '600' }}>Create New Album</h2>
                             <button onClick={() => setShowCreateModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
@@ -311,17 +356,17 @@ const DashboardGallery = () => {
                                 />
                             </div>
 
-                            {/* Cover image URL */}
+                            {/* Cover image uploader */}
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: '500', fontSize: '0.9rem' }}>
-                                    Cover Image URL <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span>
+                                    Cover Image <span style={{ color: '#aaa', fontWeight: 400 }}>(optional)</span>
                                 </label>
-                                <input
-                                    type="url"
+                                <ImageUpload
                                     value={newAlbum.cover}
-                                    onChange={(e) => setNewAlbum(prev => ({ ...prev, cover: e.target.value }))}
-                                    placeholder="https://..."
-                                    style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '8px', fontSize: '0.95rem', boxSizing: 'border-box' }}
+                                    onChange={(url) => setNewAlbum(prev => ({ ...prev, cover: url }))}
+                                    aspect="thumbnail"
+                                    label="Upload Album Cover"
+                                    subLabel="WEBP, PNG, JPG (max. 5MB)"
                                 />
                             </div>
 

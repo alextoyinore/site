@@ -5,6 +5,7 @@ import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import fallbackPrograms from '../data/programs.json';
 import Editor from '../components/Editor';
+import ImageUpload from '../components/ImageUpload';
 
 const DashboardProgramForm = () => {
     const { id } = useParams();
@@ -196,14 +197,13 @@ const DashboardProgramForm = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Cover Image URL</label>
-                            <input
-                                type="url"
-                                name="image"
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Cover Image</label>
+                            <ImageUpload
                                 value={formData.image}
-                                onChange={handleChange}
-                                placeholder="https://images.unsplash.com/photo-..."
-                                style={{ width: '100%', padding: '0.8rem', border: '1px solid #ddd', borderRadius: '8px', fontSize: '1rem' }}
+                                onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                                aspect="thumbnail"
+                                label="Upload program cover image"
+                                subLabel="WEBP, PNG, JPG (max. 5MB)"
                             />
                         </div>
                         <div>

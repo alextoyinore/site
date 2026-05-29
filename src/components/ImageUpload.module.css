@@ -1,0 +1,153 @@
+.uploadZone {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    border: 2px dashed #ddd;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    cursor: pointer;
+    background-color: #fafafa;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    overflow: hidden;
+}
+
+.uploadZone:hover, .dragOver {
+    border-color: hsl(var(--primary));
+    background-color: rgba(22, 45, 87, 0.03); /* Soft brand background tint */
+}
+
+.uploadZoneText {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    color: hsl(var(--text-light));
+    font-weight: 500;
+}
+
+.subText {
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: hsl(var(--text-light));
+    opacity: 0.7;
+}
+
+.previewContainer {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.bannerAspect {
+    height: 240px;
+}
+
+.thumbnailAspect {
+    height: 160px;
+}
+
+.squareAspect {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%; /* Perfect circle for logo/sponsors */
+    margin: 0 auto;
+}
+
+.previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.squareAspect .previewImage {
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 5;
+}
+
+.previewContainer:hover .overlay {
+    opacity: 1;
+}
+
+.overlayBtn {
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: none;
+    transition: all 0.15s ease;
+}
+
+.overlayBtn:active {
+    transform: scale(0.95);
+}
+
+.replaceBtn {
+    background-color: white;
+    color: hsl(var(--text-main));
+}
+
+.replaceBtn:hover {
+    background-color: #f3f4f6;
+}
+
+.removeBtn {
+    background-color: #ef4444;
+    color: white;
+}
+
+.removeBtn:hover {
+    background-color: #dc2626;
+}
+
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: hsl(var(--text-light));
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: hsl(var(--primary));
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #fef3c7;
+    color: #92400e;
+    z-index: 10;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

@@ -9,6 +9,7 @@ import Embed from '@editorjs/embed';
 import Marker from '@editorjs/marker';
 import InlineCode from '@editorjs/inline-code';
 import Delimiter from '@editorjs/delimiter';
+import { uploadImageToCloudinary } from '../utils/cloudinary';
 
 const Editor = ({ data, onChange, placeholder }) => {
     const ref = useRef();
@@ -27,18 +28,22 @@ const Editor = ({ data, onChange, placeholder }) => {
                         class: ImageTool,
                         config: {
                             uploader: {
-                                uploadByFile(file) {
-                                    // Simulated upload
-                                    return new Promise((resolve) => {
-                                        setTimeout(() => {
-                                            resolve({
-                                                success: 1,
-                                                file: {
-                                                    url: URL.createObjectURL(file), // Local blob for demo
-                                                }
-                                            });
-                                        }, 500);
-                                    });
+                                async uploadByFile(file) {
+                                    try {
+                                        const url = await uploadImageToCloudinary(file);
+                                        return {
+                                            success: 1,
+                                            file: {
+                                                url: url
+                                            }
+                                        };
+                                    } catch (error) {
+                                        console.error('Editor image upload failed:', error);
+                                        return {
+                                            success: 0,
+                                            message: error.message || 'Upload failed'
+                                        };
+                                    }
                                 },
                                 uploadByUrl(url) {
                                     return new Promise((resolve) => {

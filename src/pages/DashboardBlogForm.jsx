@@ -5,6 +5,7 @@ import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import blogData from '../data/blog.json';
 import Editor from '../components/Editor';
+import ImageUpload from '../components/ImageUpload';
 
 const DashboardBlogForm = () => {
     const { id } = useParams();
@@ -184,14 +185,13 @@ const DashboardBlogForm = () => {
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Cover Image URL</label>
-                                <input
-                                    type="url"
-                                    name="image"
-                                    placeholder="https://"
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Cover Image</label>
+                                <ImageUpload
                                     value={formData.image}
-                                    onChange={handleChange}
-                                    style={{ width: '100%', padding: '0.8rem', border: '1px solid #ddd', borderRadius: '8px' }}
+                                    onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                                    aspect="thumbnail"
+                                    label="Upload cover image"
+                                    subLabel="WEBP, PNG, JPG (max. 5MB)"
                                 />
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

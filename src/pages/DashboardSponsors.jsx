@@ -4,12 +4,13 @@ import { supabase, isSupabaseConfigured } from '../supabaseClient';
 import styles from './DashboardPages.module.css';
 import sponsorsData from '../data/sponsors.json';
 import Modal from '../components/Modal';
+import ImageUpload from '../components/ImageUpload';
 
 const DashboardSponsors = () => {
     const [sponsors, setSponsors] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [currentSponsor, setCurrentSponsor] = useState({ id: null, name: '', level: 'Bronze Sponsor' });
+    const [currentSponsor, setCurrentSponsor] = useState({ id: null, name: '', level: 'Bronze Sponsor', logo: '' });
     const [loading, setLoading] = useState(true);
 
     const fetchSponsors = async () => {
@@ -39,7 +40,7 @@ const DashboardSponsors = () => {
     }, []);
 
     const resetForm = () => {
-        setCurrentSponsor({ id: null, name: '', level: 'Bronze Sponsor' });
+        setCurrentSponsor({ id: null, name: '', level: 'Bronze Sponsor', logo: '' });
         setIsEditing(false);
     };
 
@@ -49,7 +50,12 @@ const DashboardSponsors = () => {
     };
 
     const handleEditSponsor = (sponsor) => {
-        setCurrentSponsor(sponsor);
+        setCurrentSponsor({
+            id: sponsor.id,
+            name: sponsor.name,
+            level: sponsor.level,
+            logo: sponsor.logo || ''
+        });
         setIsEditing(true);
         setIsModalOpen(true);
     };
@@ -78,24 +84,22 @@ const DashboardSponsors = () => {
     const handleSaveSponsor = async (e) => {
         e.preventDefault();
 
+        const payload = {
+            name: currentSponsor.name,
+            level: currentSponsor.level,
+            logo: currentSponsor.logo || "https://via.placeholder.com/150"
+        };
+
         if (isSupabaseConfigured) {
             try {
                 if (isEditing) {
                     const { error } = await supabase
                         .from('sponsors')
-                        .update({
-                            name: currentSponsor.name,
-                            level: currentSponsor.level
-                        })
+                        .update(payload)
                         .eq('id', currentSponsor.id);
                     if (error) throw error;
-                    setSponsors(sponsors.map(s => s.id === currentSponsor.id ? { ...currentSponsor } : s));
+                    setSponsors(sponsors.map(s => s.id === currentSponsor.id ? { ...currentSponsor, logo: payload.logo } : s));
                 } else {
-                    const payload = {
-                        name: currentSponsor.name,
-                        level: currentSponsor.level,
-                        logo: "https://via.placeholder.com/150"
-                    };
                     const { data, error } = await supabase
                         .from('sponsors')
                         .insert([payload])
@@ -116,12 +120,12 @@ const DashboardSponsors = () => {
         }
 
         if (isEditing) {
-            setSponsors(sponsors.map(s => s.id === currentSponsor.id ? { ...currentSponsor } : s));
+            setSponsors(sponsors.map(s => s.id === currentSponsor.id ? { ...currentSponsor, logo: payload.logo } : s));
         } else {
             const sponsorToAdd = {
                 id: Date.now(),
                 ...currentSponsor,
-                logo: "https://via.placeholder.com/150"
+                logo: payload.logo
             };
             setSponsors([sponsorToAdd, ...sponsors]);
         }
@@ -145,6 +149,7 @@ const DashboardSponsors = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            <th>Logo</th>
                             <th>Sponsor Name</th>
                             <th>Level</th>
                             <th>Actions</th>
@@ -153,6 +158,13 @@ const DashboardSponsors = () => {
                     <tbody>
                         {sponsors.map(sponsor => (
                             <tr key={sponsor.id}>
+                                <td>
+                                    <img 
+                                        src={sponsor.logo || 'https://via.placeholder.com/150'} 
+                                        alt={sponsor.name} 
+                                        style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #eee' }} 
+                                    />
+                                </td>
                                 <td>{sponsor.name}</td>
                                 <td>{sponsor.level}</td>
                                 <td>
@@ -167,6 +179,19 @@ const DashboardSponsors = () => {
 
             <Modal title={isEditing ? "Edit Sponsor" : "Add New Sponsor"} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <form onSubmit={handleSaveSponsor} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    
+                    {/* circular square Logo Upload field */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', alignSelf: 'flex-start' }}>Sponsor Logo</label>
+                        <ImageUpload
+                            value={currentSponsor.logo}
+                            onChange={(url) => setCurrentSponsor(prev => ({ ...prev, logo: url }))}
+                            aspect="square"
+                            label="Upload Logo"
+                            subLabel="WEBP, PNG, JPG (max. 2MB)"
+                        />
+                    </div>
+
                     <div>
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Sponsor Name</label>
                         <input
